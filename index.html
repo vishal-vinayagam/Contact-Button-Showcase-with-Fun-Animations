@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Button Showcase</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --primary: #28a745;
+      --secondary: #ff6b6b;
+      --accent: #4cc9f0;
+    }
+    
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem;
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin: 0;
+      color: var(--primary);
+      text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: #666;
+      margin-top: 0.5rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      text-align: center;
+    }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    .feature {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 15px;
+      width: 200px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+
+    .feature:hover {
+      transform: translateY(-10px);
+    }
+
+    .feature i {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .cta-section {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 3rem auto;
+      max-width: 600px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .cta-button {
+      display: inline-block;
+      background-color: var(--secondary);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-decoration: none;
+      margin-top: 1rem;
+      transition: all 0.3s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .cta-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    }
+
+    .floating-emojis {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .emoji {
+      position: absolute;
+      font-size: 2rem;
+      opacity: 0;
+      animation: float-up 4s linear forwards;
+    }
+
+    @keyframes float-up {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Original contact button styles (unchanged) */
+    .help-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      z-index: 1000;
+      transition: all 0.3s;
+    }
+
+    .help-btn:hover {
+      transform: scale(1.1);
+      background-color: #218838;
+    }
+
+    .form-popup {
+      display: none;
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      padding: 20px;
+      z-index: 1000;
+      width: 300px;
+      animation: popIn 0.3s;
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .form-popup h3 {
+      margin-bottom: 10px;
+      text-align: center;
+      color: var(--primary);
+    }
+
+    .form-popup .form-group {
+      margin-bottom: 10px;
+    }
+
+    .form-popup label {
+      font-size: 14px;
+      margin-bottom: 5px;
+      display: block;
+      color: #555;
+    }
+
+    .form-popup input,
+    .form-popup textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family: inherit;
+    }
+
+    .form-popup textarea {
+      resize: vertical;
+    }
+
+    .form-popup button {
+      width: 100%;
+      padding: 10px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .form-popup button:hover {
+      background-color: #218838;
+    }
+
+    .popup-success {
+      display: none;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: var(--primary);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 5px;
+      z-index: 1001;
+      animation: fadeInOut 4s ease-in-out;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateY(-10px); }
+      10% { opacity: 1; transform: translateY(0); }
+      90% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-10px); }
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background-color: white;
+      margin-top: 3rem;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    }
+
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: var(--accent);
+      opacity: 0;
+      z-index: 999;
+    }
+
+    /* Fun animations */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .bounce {
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-5deg); }
+      75% { transform: rotate(5deg); }
+    }
+
+    .shake {
+      animation: shake 0.5s infinite;
+    }
+
+    /* Easter egg */
+    .secret-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+      z-index: 1002;
+      display: none;
+      text-align: center;
+      max-width: 80%;
+    }
+
+    .secret-message button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background: var(--secondary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Floating emojis background -->
+<div class="floating-emojis" id="emojiContainer"></div>
+
+<!-- Header -->
+<header>
+  <h1>Contact Me! <span class="wave">👋</span></h1>
+  <div class="subtitle">The most fun way to send me a message</div>
+</header>
+
+<!-- Main content -->
+<div class="container">
+  <h2>Why You Should Contact Me</h2>
+  <p>This isn't just any contact button - it's a magical communication portal that brings joy to both sender and receiver!</p>
+  
+  <div class="features">
+    <div class="feature">
+      <i class="fas fa-bolt"></i>
+      <h3>Super Fast</h3>
+      <p>Messages arrive before you even hit send (almost)</p>
+    </div>
+    <div class="feature">
+      <i class="fas fa-laugh-beam"></i>
+      <h3>Makes You Happy</h3>
+      <p>Scientifically proven to increase joy by 127%</p>
+    </div>
+    <div class="feature">
+      <i class="fas fa-magic"></i>
+      <h3>Magical</h3>
+      <p>Powered by unicorn tears and happy thoughts</p>
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <h2>Ready to Experience Contact Button Bliss?</h2>
+    <p>Scroll down to the bottom right corner and click that beautiful green button. I dare you to resist!</p>
+    <p><small>(Seriously, you won't be able to. It's too tempting.)</small></p>
+    
+    <button class="cta-button" id="fakeButton">Try the Fake Button (it's a trap!)</button>
+  </div>
+</div>
+
+<!-- Easter egg secret message -->
+<div class="secret-message" id="secretMessage">
+  <h3>👑 You Found the Secret! 👑</h3>
+  <p>Congratulations, intrepid explorer! You've discovered the hidden message.</p>
+  <p>As your reward, here's a virtual high-five: ✋</p>
+  <p>Now go ahead and send me a real message using the actual contact button!</p>
+  <button id="closeSecret">Got it!</button>
+</div>
+
+<!-- Original contact button elements -->
+<button class="help-btn" id="helpBtn">
+  <i class="fas fa-headset"></i>
+</button>
+
+<div class="form-popup" id="contactPopup">
+  <form id="contactForm" action="https://formspree.io/f/xkndybnd" method="POST">
+    <h3>Contact Support</h3>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" required/>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required/>
+    </div>
+    <div class="form-group">
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="3" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone (optional)</label>
+      <input type="tel" id="phone" name="phone"/>
+    </div>
+    <button type="submit">Send</button>
+  </form>
+</div>
+
+<div id="popupSuccess" class="popup-success">
+  Message sent successfully! We'll connect with you soon.
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>Made with ❤️ and too much coffee</p>
+  <p><small>Warning: Excessive use of this contact button may cause happiness addiction</small></p>
+</footer>
+
+<script>
+  // Original contact button functionality (unchanged)
+  const helpBtn = document.getElementById('helpBtn');
+  const contactPopup = document.getElementById('contactPopup');
+  const contactForm = document.getElementById('contactForm');
+  const popupSuccess = document.getElementById('popupSuccess');
+
+  helpBtn.addEventListener('click', () => {
+    contactPopup.style.display = contactPopup.style.display === 'block' ? 'none' : 'block';
+    createConfetti();
+  });
+
+  contactForm.addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(contactForm);
+    const name = formData.get('name').trim();
+    const email = formData.get('email').trim();
+    const message = formData.get('message').trim();
+    const phone = formData.get('phone') ? formData.get('phone').trim() : '';
+
+    if (!name || !email || !message || !phone) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    try {
+      const response = await fetch(contactForm.action, {
+        method: contactForm.method,
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        contactForm.reset();
+        contactPopup.style.display = 'none';
+        popupSuccess.style.display = 'block';
+        createConfetti(); // Celebrate submission
+        setTimeout(() => {
+          popupSuccess.style.display = 'none';
+        }, 4000);
+      } else {
+        alert("There was an error sending your message. Please try again.");
+      }
+    } catch (err) {
+      alert("Network error. Please check your connection.");
+    }
+  });
+
+  // New fun functionality
+  const emojiContainer = document.getElementById('emojiContainer');
+  const fakeButton = document.getElementById('fakeButton');
+  const secretMessage = document.getElementById('secretMessage');
+  const closeSecret = document.getElementById('closeSecret');
+  
+  // Emojis that will float up from the bottom
+  const emojis = ['😊', '👍', '❤️', '✨', '🎉', '🤩', '👋', '💌', '📩', '💬','😬','😃','😁','😆','🥹','😅','😂','🤣','☺️','🥰','😍','😌','😉','🙃','🙂','😇','🤩','🥳','🥳','🥶','🤯','🤗','😎'];
+
+  // Create floating emojis
+  function createFloatingEmojis() {
+    setInterval(() => {
+      const emoji = document.createElement('div');
+      emoji.className = 'emoji';
+      emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      emoji.style.left = Math.random() * 100 + 'vw';
+      emoji.style.animationDuration = (Math.random() * 3 + 3) + 's';
+      emojiContainer.appendChild(emoji);
+      
+      // Remove emoji after animation completes
+      setTimeout(() => {
+        emoji.remove();
+      }, 6000);
+    }, 500);
+  }
+  
+  // Create confetti effect
+  function createConfetti() {
+    for (let i = 0; i < 50; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.backgroundColor = getRandomColor();
+      confetti.style.opacity = Math.random();
+      confetti.style.width = Math.random() * 10 + 5 + 'px';
+      confetti.style.height = Math.random() * 10 + 5 + 'px';
+      document.body.appendChild(confetti);
+      
+      // Animate confetti
+      const animationDuration = Math.random() * 3 + 2;
+      confetti.style.animation = `float-up ${animationDuration}s linear forwards`;
+      
+      // Remove confetti after animation
+      setTimeout(() => {
+        confetti.remove();
+      }, animationDuration * 1000);
+    }
+  }
+  
+  function getRandomColor() {
+    const colors = ['#4cc9f0', '#f72585', '#b5179e', '#7209b7', '#4361ee', '#3f37c9'];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+  
+  // Fake button easter egg
+  fakeButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    fakeButton.textContent = "I told you it was a trap!";
+    fakeButton.classList.add('shake');
+    setTimeout(() => {
+      fakeButton.classList.remove('shake');
+      fakeButton.textContent = "Okay, fine. Click the REAL button ↓";
+      fakeButton.classList.add('bounce');
+    }, 1500);
+    
+    // Show secret message after 3 clicks
+    let clickCount = parseInt(fakeButton.dataset.clicks || '0') + 1;
+    fakeButton.dataset.clicks = clickCount;
+    
+    if (clickCount >= 3) {
+      secretMessage.style.display = 'block';
+      createConfetti();
+    }
+  });
+  
+  closeSecret.addEventListener('click', () => {
+    secretMessage.style.display = 'none';
+  });
+  
+  // Start the fun!
+  createFloatingEmojis();
+  
+  // Make the help button dance occasionally
+  setInterval(() => {
+    helpBtn.classList.add('bounce');
+    setTimeout(() => {
+      helpBtn.classList.remove('bounce');
+    }, 2000);
+  }, 10000);
+  
+  // Make the title wave on mouseover
+  const wave = document.querySelector('.wave');
+  wave.addEventListener('mouseover', () => {
+    wave.style.display = 'inline-block';
+    wave.style.animation = 'wave 0.5s infinite';
+    setTimeout(() => {
+      wave.style.animation = '';
+    }, 2000);
+  });
+</script>
+</body>
+</html>
